@@ -6,11 +6,13 @@ import java.util.List;
 import com.coolweather.app.model.City;
 import com.coolweather.app.model.County;
 import com.coolweather.app.model.Province;
+import com.coolweather.app.util.LogUtil;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 
 public class CoolWeatherDB {
 
@@ -45,22 +47,39 @@ public class CoolWeatherDB {
 	 * 将province实例存储到数据库
 	 * */
 	public void saveProvince(Province province){
+		
+		LogUtil.e("判断传入.....省......对象是否为空不为空进行savaProvince保存");
+		
 		if(province != null){
 			ContentValues values = new ContentValues();
 			values.put("province_name", province.getProvinceName());
-			values.put("province_coe", province.getProvinceCode());
-			db.insert("Provicne", null, values);
+			values.put("province_code", province.getProvinceCode());
+			db.insert("Province", null, values);
+			
 		}
 	}
 	/*
 	 * 从数据库读取全国所有的省份信息
 	 * */
 	public List<Province> loadProvinces(){
+		
 		List<Province> list = new ArrayList<Province>();
+		
+		/*cursor将光标指定到province_id列前，之后可以循环输出符合province_id的所有数据
+		"province_id=?",new String[]{String.valueOf(provinceId)},
+		这样写两个元素是是为了防止别人的攻击，在"province_id=?",位置可以直接写
+		条件，但是这样不安全*/
+		
 		Cursor cursor = db
 				.query("Province", null, null, null, null, null, null, null);
+		
+
 		if(cursor.moveToFirst()){
 			do{
+				
+				LogUtil.e("在光标中以此读取loadProvinces....name: " +cursor.getString(cursor
+						.getColumnIndex("province_name")));
+				
 				Province province = new Province();
 				province.setId(cursor.getInt(cursor.getColumnIndex("id")));
 				province.setProvinceName(cursor.getString(cursor
@@ -78,13 +97,20 @@ public class CoolWeatherDB {
 	/*
 	 * 将city实例化存储到数据库:将数据写入到数据库
 	 * */
+	
 	public void saveCity(City city){
-		if(city==null){
+		
+		LogUtil.e("判断传入.....市......对象是否为空不为空进行savacity保存");
+		
+		if(city!=null){
 			ContentValues values = new ContentValues();
 			values.put("city_name", city.getCityName());
 			values.put("city_code", city.getCityCode());
 			values.put("province_id",city.getProvinceId());
+			
+			
 			db.insert("City", null, values);
+
 		}
 	}
 	/*
@@ -92,14 +118,18 @@ public class CoolWeatherDB {
 	 * */
 	public List<City> loadCities(int provinceId){
 		List<City> list = new ArrayList<City>();
-		/*cursor将光标指定到province_id列前，之后可以循环输出符合province_id的所有数据
-		"province_id=?",new String[]{String.valueOf(provinceId)},
-		这样写两个元素是是为了防止别人的攻击，在"province_id=?",位置可以直接写
-		条件，但是这样不安全*/
-		Cursor cursor = db.query("Ciyt",null,"province_id=?",
+	
+		//Log.e("tag","i see working");
+		
+		Cursor cursor = db.query("City",null,"province_id=?",
 				new String[]{String.valueOf(provinceId)},null,null,null);
 		if(cursor.moveToFirst()){
 			do{
+				
+				LogUtil.e( "loadCities....name: " +cursor.getString(cursor
+				.getColumnIndex("city_name")));
+				
+				
 				City city = new City();
 				city.setId(cursor.getInt(cursor
 						.getColumnIndex("id")));
@@ -121,6 +151,9 @@ public class CoolWeatherDB {
 	 * 将county实例化存储到数据库：写数据到数据库中
 	 * */
 	public void saveCounty(County county){
+		
+		LogUtil.e("判断传入.....县......对象是否为空不为空进行savacounty保存");
+		
 		if(county!=null){
 			ContentValues values = new ContentValues();
 			values.put("county_name", county.getCountyName());
@@ -134,10 +167,14 @@ public class CoolWeatherDB {
 	 * */
 	public List<County> loadCounty(int cityId){
 		List<County> list = new ArrayList<County>();
-		Cursor cursor = db.query( "County", null,"cityId=?", new String[]{String.valueOf(cityId)}, 
+		Cursor cursor = db.query( "County", null,"city_id=?", new String[]{String.valueOf(cityId)}, 
 				 null,null,null);
 		if(cursor.moveToFirst()){
 			do{
+				
+				LogUtil.e("在光标中以此读取loadcounty....name: " +cursor.getString(cursor
+						.getColumnIndex("county_name")));
+				
 				County county = new County();
 				county.setId(cursor.getInt(cursor
 						.getColumnIndex("id")));
@@ -146,6 +183,7 @@ public class CoolWeatherDB {
 				county.setCountyCode(cursor.getString(cursor
 						.getColumnIndex("county_code")));
 				county.setCityId(cityId);
+				list.add(county);
 			}while(cursor.moveToNext());
 			
 			if(cursor !=null){
