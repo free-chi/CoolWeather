@@ -48,7 +48,7 @@ public class CoolWeatherDB {
 	 * */
 	public void saveProvince(Province province){
 		
-		LogUtil.e("判断传入.....省......对象是否为空不为空进行savaProvince保存");
+//		LogUtil.e("判断传入.....省......对象是否为空不为空进行savaProvince保存");
 		
 		if(province != null){
 			ContentValues values = new ContentValues();
@@ -77,8 +77,8 @@ public class CoolWeatherDB {
 		if(cursor.moveToFirst()){
 			do{
 				
-				LogUtil.e("在光标中以此读取loadProvinces....name: " +cursor.getString(cursor
-						.getColumnIndex("province_name")));
+//				LogUtil.e("在光标中以此读取loadProvinces....name: " +cursor.getString(cursor
+//						.getColumnIndex("province_name")));
 				
 				Province province = new Province();
 				province.setId(cursor.getInt(cursor.getColumnIndex("id")));
@@ -100,7 +100,7 @@ public class CoolWeatherDB {
 	
 	public void saveCity(City city){
 		
-		LogUtil.e("判断传入.....市......对象是否为空不为空进行savacity保存");
+//		LogUtil.e("判断传入.....市......对象是否为空不为空进行savacity保存");
 		
 		if(city!=null){
 			ContentValues values = new ContentValues();
@@ -126,8 +126,8 @@ public class CoolWeatherDB {
 		if(cursor.moveToFirst()){
 			do{
 				
-				LogUtil.e( "loadCities....name: " +cursor.getString(cursor
-				.getColumnIndex("city_name")));
+//				LogUtil.e( "loadCities....name: " +cursor.getString(cursor
+//				.getColumnIndex("city_name")));
 				
 				
 				City city = new City();
@@ -152,7 +152,7 @@ public class CoolWeatherDB {
 	 * */
 	public void saveCounty(County county){
 		
-		LogUtil.e("判断传入.....县......对象是否为空不为空进行savacounty保存");
+//		LogUtil.e("判断传入.....县......对象是否为空不为空进行savacounty保存");
 		
 		if(county!=null){
 			ContentValues values = new ContentValues();
@@ -172,8 +172,8 @@ public class CoolWeatherDB {
 		if(cursor.moveToFirst()){
 			do{
 				
-				LogUtil.e("在光标中以此读取loadcounty....name: " +cursor.getString(cursor
-						.getColumnIndex("county_name")));
+//				LogUtil.e("在光标中以此读取loadcounty....name: " +cursor.getString(cursor
+//						.getColumnIndex("county_name")));
 				
 				County county = new County();
 				county.setId(cursor.getInt(cursor
